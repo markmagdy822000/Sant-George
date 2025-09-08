@@ -1,4 +1,4 @@
-import { Register } from './../Components/register/register';
+import { IForgotPasswordDTO } from '../Models/iforgotPasswordDTO';
 import { Injectable } from '@angular/core';
 import { ILogin } from '../Models/ilogin';
 import { Observable, Observer } from 'rxjs';
@@ -18,5 +18,8 @@ export class AuthServices {
   }
   register(registerDto:IRegister):Observable<IRegister>{
     return this.http.post<IRegister>(`${this.baseUrl}/Register`, registerDto);
+  }
+  forgotPassword(forgotPasswordDTO:IForgotPasswordDTO):Observable<IForgotPasswordDTO>{
+    return this.http.get<IForgotPasswordDTO>(`${this.baseUrl}/forgot-password?email=${forgotPasswordDTO.email}`);
   }
 }

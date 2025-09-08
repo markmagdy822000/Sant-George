@@ -122,24 +122,25 @@ namespace Sant_George_Website.Controllers
 
         [AllowAnonymous]
         [HttpGet("forgot-password")]
-        public async Task<IActionResult> ForgetPassword([FromBody] ForgotPasswordDTO forgotPasswordDTO)
+        // public async Task<IActionResult> ForgetPassword([FromBody] ForgotPasswordDTO forgotPasswordDTO)
+        public async Task<IActionResult> ForgetPassword(string email)
         {
-            var user = await _userManager.FindByEmailAsync(forgotPasswordDTO.Email);
+            var user = await _userManager.FindByEmailAsync(email);
             if (user == null) return Ok("user not found");
 
-            var token= await _userManager.GeneratePasswordResetTokenAsync(user);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            var code = WebEncoders.Base64UrlEncode( Encoding.UTF8.GetBytes(token));
+            var code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
             //var baseURL = "https://SantGeorge.com";
             var baseURL = "http://localhost:1234";//front-end port
-            var link = $"{baseURL}/reset-password?email={Uri.EscapeDataString(forgotPasswordDTO.Email)}&code={code}";
+            var link = $"{baseURL}/reset-password?email={Uri.EscapeDataString(email)}&code={code}";
 
             var htmlMessage = $"Click here to reset your password <a href='{link}'> Reset Link</a>" +
                 $" \n ignore link if you don't request";
             var subject = "Reset Password";
-            await _mailSender.SendEmailAsync(forgotPasswordDTO.Email, subject, htmlMessage);
-            return  Ok(new { success=true, message="Email was sent successfully✅"});
+            await _mailSender.SendEmailAsync(email, subject, htmlMessage);
+            return Ok(new { success = true, message = "Email was sent successfully✅" });
         }
 
         [AllowAnonymous]
@@ -149,7 +150,7 @@ namespace Sant_George_Website.Controllers
             var user = await _userManager.FindByEmailAsync(resetPasswordDTO.Email);
             if (user == null) return Ok();
 
-            var token = Encoding.UTF8.GetString( WebEncoders.Base64UrlDecode(resetPasswordDTO.code));
+            var token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(resetPasswordDTO.code));
 
             var result = await _userManager.ResetPasswordAsync(user, token, resetPasswordDTO.newPassword);
             if (!result.Succeeded) return Ok();
