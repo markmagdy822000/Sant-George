@@ -5,5 +5,5 @@ export interface IRegister {
     class:number;
     address?:string; 
     gender?:string; 
-    rememberMe:boolean;
+    // rememberMe:boolean;
 }

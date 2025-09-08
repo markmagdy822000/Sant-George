@@ -17,6 +17,6 @@ export class AuthServices {
     return this.http.post<ILogin>(`${this.baseUrl}/Login`, loginDto);
   }
   register(registerDto:IRegister):Observable<IRegister>{
-    return this.http.post<IRegister>(`${this.baseUrl}/register`, registerDto);
+    return this.http.post<IRegister>(`${this.baseUrl}/Register`, registerDto);
   }
 }
