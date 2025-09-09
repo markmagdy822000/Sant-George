@@ -116,7 +116,8 @@ namespace Sant_George_Website.Controllers
                 token = tokenString,
                 expires = token.ValidTo,
                 userId = user.Id,
-                email = user.Email
+                email = user.Email,
+                username= user.UserName
             });
         }
 
@@ -133,7 +134,7 @@ namespace Sant_George_Website.Controllers
             var code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
             //var baseURL = "https://SantGeorge.com";
-            var baseURL = "http://localhost:1234";//front-end port
+            var baseURL = "http://localhost:4200";//front-end port
             var link = $"{baseURL}/reset-password?email={Uri.EscapeDataString(email)}&code={code}";
 
             var htmlMessage = $"Click here to reset your password <a href='{link}'> Reset Link</a>" +

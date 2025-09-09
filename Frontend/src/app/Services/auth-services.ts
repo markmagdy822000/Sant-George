@@ -1,3 +1,4 @@
+import { IResetPassword } from './../Models/ireset-password';
 import { IForgotPasswordDTO } from '../Models/iforgotPasswordDTO';
 import { Injectable } from '@angular/core';
 import { ILogin } from '../Models/ilogin';
@@ -21,5 +22,8 @@ export class AuthServices {
   }
   forgotPassword(forgotPasswordDTO:IForgotPasswordDTO):Observable<IForgotPasswordDTO>{
     return this.http.get<IForgotPasswordDTO>(`${this.baseUrl}/forgot-password?email=${forgotPasswordDTO.email}`);
+  }
+  resetPassword(IResetPassword:IResetPassword):Observable<any>{
+    return this.http.post<any>(`${this.baseUrl}/ResetPassword`, IResetPassword);
   }
 }
