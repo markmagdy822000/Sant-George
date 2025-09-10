@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Sant_George.Models;
 
 namespace SantGeorgeWebsite.Models
 {
@@ -6,7 +7,8 @@ namespace SantGeorgeWebsite.Models
     {
         public string Address { get; set; }
         public Gender Gender{ get; set; }
-        public int Class{ get; set; } 
+        public int Class{ get; set; }
+        public List<RefreshToken>? RefreshTokens { get; set; }
     }
     public enum Gender
     {

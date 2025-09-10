@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SantGeorgeWebsite.Models;
 
@@ -11,9 +12,11 @@ using SantGeorgeWebsite.Models;
 namespace Sant_George_Website.Migrations
 {
     [DbContext(typeof(SantGeorgeWebsiteDBContext))]
-    partial class SantGeorgeWebsiteDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250909165314_add-refresh-token")]
+    partial class addrefreshtoken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -523,9 +526,6 @@ namespace Sant_George_Website.Migrations
                                 .HasColumnType("datetime2");
 
                             b1.Property<DateTime>("ExpiresOn")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<DateTime?>("RevokedOn")
                                 .HasColumnType("datetime2");
 
                             b1.Property<string>("Token")

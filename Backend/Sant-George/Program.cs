@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Transactions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -15,7 +16,7 @@ namespace SantGeorgeWebsite
     public class Program
     {
         public static void Main(string[] args)
-        {
+        {       
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers();
@@ -37,22 +38,6 @@ namespace SantGeorgeWebsite
             var jwtKey = "this is my secrect key for the SantGeorge project";
             var key = Encoding.ASCII.GetBytes(jwtKey);
 
-            //builder.Services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //.AddJwtBearer(options =>
-            //{
-            //    options.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        IssuerSigningKey = new SymmetricSecurityKey(key),
-            //        ValidateIssuer = false,
-            //        ValidateAudience = false,
-            //        ValidateLifetime = true,
-            //        ValidateIssuerSigningKey = true
-            //    };
-            //});
 
            
 
@@ -67,6 +52,7 @@ namespace SantGeorgeWebsite
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequiredLength = 1;
+                
             })
             .AddEntityFrameworkStores<SantGeorgeWebsiteDBContext>()
             .AddDefaultTokenProviders();
@@ -79,6 +65,7 @@ namespace SantGeorgeWebsite
                 options.DefaultScheme = "myschema";
                 options.DefaultAuthenticateScheme = "myschema";
                 options.DefaultChallengeScheme = "myschema";
+                
             })
         .AddJwtBearer("myschema", options =>
         {
@@ -88,7 +75,8 @@ namespace SantGeorgeWebsite
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 IssuerSigningKey = secretKey,
-                ValidateLifetime = true
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
             };
         });
             // Other services

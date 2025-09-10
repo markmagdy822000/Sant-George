@@ -1,14 +1,18 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Data;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Sant_George.DTOs;
+using Sant_George.Models;
 using Sant_George_Website.DTOs;
 using Sant_George_Website.UnitOfWorks;
 using SantGeorgeWebsite.Models;
@@ -85,8 +89,55 @@ namespace Sant_George_Website.Controllers
             var found = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (!found)
                 return BadRequest(new { errors = new[] { "Invalid User Email or Password" } });
+            
+            AuthDTO? authDTO = new AuthDTO();
+            
 
             #region JWT Token Generation
+
+            var token = await GenerateAccessToken(user);
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            authDTO.token = tokenString;
+            authDTO.expires = token.ValidTo;
+            #endregion
+
+            #region handle refresh token
+
+            RefreshToken RefreshToken = new RefreshToken();
+
+            if (user.RefreshTokens.Any(r => r.IsActive))
+            {
+                RefreshToken = user.RefreshTokens.FirstOrDefault(r => r.IsActive);
+                authDTO.refreshToken = RefreshToken.Token;
+                authDTO.refreshTokenExpiresOn = RefreshToken.ExpiresOn;
+            }
+            else{
+                RefreshToken = GenerateRefreshToken();
+                authDTO.refreshToken = RefreshToken.Token;
+                authDTO.refreshTokenExpiresOn = RefreshToken.ExpiresOn;
+                user.RefreshTokens.Add(RefreshToken);
+                await _userManager.UpdateAsync(user);
+            }
+
+            AddRefreshTokenToCookie(RefreshToken);
+            authDTO.userId = user.Id;
+            authDTO.email = user.Email;
+            authDTO.username = user.UserName;
+            authDTO.roles = await _userManager.GetRolesAsync(user);
+
+            #endregion
+            return Ok(authDTO);
+        }
+        public void AddRefreshTokenToCookie(RefreshToken refreshToken)
+        {
+            var cookieOptions = new CookieOptions()
+            {
+                Expires = new DateTimeOffset(refreshToken.ExpiresOn.ToLocalTime())
+            };
+            HttpContext.Response.Cookies.Append("refreshToken", refreshToken.Token,cookieOptions);
+        }
+        public async Task<JwtSecurityToken> GenerateAccessToken(ApplicationUser user)
+        {
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
@@ -103,27 +154,14 @@ namespace Sant_George_Website.Controllers
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(7), // Changed from 10000 days to 7 days
+                expires: DateTime.UtcNow.AddSeconds(45), 
                 signingCredentials: credentials,
-                notBefore: DateTime.UtcNow // Token valid from now
+                notBefore: DateTime.UtcNow 
             );
-
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-
-            #endregion
-            return Ok(new
-            {
-                token = tokenString,
-                expires = token.ValidTo,
-                userId = user.Id,
-                email = user.Email,
-                username= user.UserName
-            });
+            return token;
         }
-
         [AllowAnonymous]
         [HttpGet("forgot-password")]
-        // public async Task<IActionResult> ForgetPassword([FromBody] ForgotPasswordDTO forgotPasswordDTO)
         public async Task<IActionResult> ForgetPassword(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -156,6 +194,54 @@ namespace Sant_George_Website.Controllers
             var result = await _userManager.ResetPasswordAsync(user, token, resetPasswordDTO.newPassword);
             if (!result.Succeeded) return Ok();
             return Ok(result);
+        }
+        private RefreshToken GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            var generator = new RNGCryptoServiceProvider();
+            generator.GetBytes(randomNumber);
+
+            return new RefreshToken 
+            {
+                Token = Convert.ToBase64String(randomNumber),
+                CreatedOn = DateTime.UtcNow,
+                ExpiresOn = DateTime.UtcNow.AddDays(7),
+            };
+        }
+
+        [HttpPost("newTokens")]
+        private async Task<AuthDTO> GenerateNewRefreshAndAccessTokens(string oldToken) {
+
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(r => r.Token== oldToken));
+            if (user == null) return new AuthDTO{ Message = "not valid" };
+            else if(user.RefreshTokens.Any(r=>r.IsExpired)) return new AuthDTO { Message = "token expired" }; 
+            RefreshToken refreshtoken = user.RefreshTokens.SingleOrDefault(r => r.IsActive);
+            refreshtoken.RevokedOn = DateTime.UtcNow;
+            refreshtoken = GenerateRefreshToken();
+
+            var token = await GenerateAccessToken(user);
+
+            user.RefreshTokens.Add(refreshtoken);
+            await _userManager.UpdateAsync(user);
+
+            return new AuthDTO
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                expires = token.ValidTo,
+                refreshToken = refreshtoken.Token,
+                refreshTokenExpiresOn = refreshtoken.ExpiresOn,
+                userId = user.Id,
+                email = user.Email,
+                username = user.UserName,
+                roles = await _userManager.GetRolesAsync(user)
+            };
+        }
+
+        [Authorize]
+        [HttpGet("secured")]
+        public IActionResult Secured()
+        {
+            return Ok("accessed✅");
         }
     }
 }
