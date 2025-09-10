@@ -2,6 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IRegister } from '../../Models/iregister';
 import { AuthServices } from '../../Services/auth-services';
+import { httpResource } from '@angular/common/http';
+import { nextTick } from 'process';
 
 @Component({
   selector: 'app-register',
@@ -33,6 +35,10 @@ export class Register implements OnDestroy {
       error:(err)=>console.log(err)
     });
   }
-
+testAuth(){
+  this.authServices.testAuth().subscribe({
+    next:res=>console.log(res)
+  })
+}
 
 }

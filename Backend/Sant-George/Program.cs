@@ -25,9 +25,10 @@ namespace SantGeorgeWebsite
                 options.AddPolicy(name: "MyAllowSpecificOrigins",
                                   policy =>
                                   {
-                                      policy.WithOrigins("http://localhost:4200")
+                                      policy.WithOrigins("http://localhost:4200", "https://localhost:4200")
                                             .AllowAnyHeader()
-                                            .AllowAnyMethod();
+                                            .AllowAnyMethod().
+                                            AllowCredentials();
                                   });
             });
             builder.Services.AddDbContext<SantGeorgeWebsiteDBContext>(options =>

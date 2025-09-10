@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -132,7 +133,10 @@ namespace Sant_George_Website.Controllers
         {
             var cookieOptions = new CookieOptions()
             {
-                Expires = new DateTimeOffset(refreshToken.ExpiresOn.ToLocalTime())
+                Expires = new DateTimeOffset(refreshToken.ExpiresOn.ToLocalTime()),
+                HttpOnly=true,
+                Secure = true,
+                SameSite = SameSiteMode.None
             };
             HttpContext.Response.Cookies.Append("refreshToken", refreshToken.Token,cookieOptions);
         }
@@ -154,7 +158,7 @@ namespace Sant_George_Website.Controllers
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.UtcNow.AddSeconds(45), 
+                expires: DateTime.UtcNow.AddSeconds(30), 
                 signingCredentials: credentials,
                 notBefore: DateTime.UtcNow 
             );
@@ -209,32 +213,39 @@ namespace Sant_George_Website.Controllers
             };
         }
 
+        [AllowAnonymous]
         [HttpPost("newTokens")]
-        private async Task<AuthDTO> GenerateNewRefreshAndAccessTokens(string oldToken) {
+        public async Task<IActionResult> GenerateNewRefreshAndAccessTokens() {
+            var oldToken  = Request.Cookies["refreshToken"];
+            if (string.IsNullOrEmpty(oldToken))
+                return BadRequest( new AuthDTO { Message = "Refresh token not found" });
 
             var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(r => r.Token== oldToken));
-            if (user == null) return new AuthDTO{ Message = "not valid" };
-            else if(user.RefreshTokens.Any(r=>r.IsExpired)) return new AuthDTO { Message = "token expired" }; 
-            RefreshToken refreshtoken = user.RefreshTokens.SingleOrDefault(r => r.IsActive);
-            refreshtoken.RevokedOn = DateTime.UtcNow;
-            refreshtoken = GenerateRefreshToken();
+            if (user == null) return BadRequest( new AuthDTO{ Message = "not valid" });
 
-            var token = await GenerateAccessToken(user);
+            var refreshToken = user.RefreshTokens.FirstOrDefault(r => r.Token == oldToken);
 
-            user.RefreshTokens.Add(refreshtoken);
+            if (refreshToken.IsExpired) return BadRequest(new AuthDTO { Message = "token expired" }); 
+
+            if(!refreshToken.IsActive) return BadRequest(new AuthDTO { Message = "token is not active (used before or expired)" });
+            refreshToken.RevokedOn = DateTime.UtcNow;
+            refreshToken = GenerateRefreshToken();
+            user.RefreshTokens.Add(refreshToken);
             await _userManager.UpdateAsync(user);
+            AddRefreshTokenToCookie(refreshToken);
 
-            return new AuthDTO
+            var accessToken = await GenerateAccessToken(user);
+            return Ok(new AuthDTO
             {
-                token = new JwtSecurityTokenHandler().WriteToken(token),
-                expires = token.ValidTo,
-                refreshToken = refreshtoken.Token,
-                refreshTokenExpiresOn = refreshtoken.ExpiresOn,
+                token = new JwtSecurityTokenHandler().WriteToken(accessToken),
+                expires = accessToken.ValidTo,
+                //refreshToken = refreshToken.Token,
+                refreshTokenExpiresOn = refreshToken.ExpiresOn,
                 userId = user.Id,
                 email = user.Email,
                 username = user.UserName,
                 roles = await _userManager.GetRolesAsync(user)
-            };
+            });
         }
 
         [Authorize]
