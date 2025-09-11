@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Sant_George_Website.Migrations
+namespace Sant_George.Migrations
 {
     /// <inheritdoc />
     public partial class v2 : Migration

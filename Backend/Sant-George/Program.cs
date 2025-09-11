@@ -1,17 +1,15 @@
 ﻿using System.Text;
-using System.Transactions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Sant_George_Website.Controllers;
-using Sant_George_Website.Mappers;
-using Sant_George_Website.UnitOfWorks;
-using SantGeorgeWebsite.Models;
+using Sant_George.Controllers;
+using Sant_George.Mappers;
+using Sant_George.Models;
+using Sant_George.Models.User;
+using Sant_George.UnitOfWorks;
 
-namespace SantGeorgeWebsite
+namespace Sant_George
 {
     public class Program
     {
@@ -79,7 +77,7 @@ namespace SantGeorgeWebsite
             builder.Services.AddOpenApi();
             builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingConfig>());
             builder.Services.AddTransient<IEmailSender, ConfirmEmailController>();
-            builder.Services.AddScoped<IUnitOfWorks, UnitOfWorks>();
+            builder.Services.AddScoped<IUnitOfWorks, Sant_George.UnitOfWorks.UnitOfWorks>();
 
             var app = builder.Build();
 

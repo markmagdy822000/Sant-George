@@ -1,6 +1,6 @@
-﻿using SantGeorgeWebsite.Models;
+﻿using Sant_George.Models;
 
-namespace SantGeorgeWebsite.Repositories.Interfaces
+namespace Sant_George.Repositories.Interfaces
 {
     public interface IServiceRepository : IGenericRepository<Service>
     {

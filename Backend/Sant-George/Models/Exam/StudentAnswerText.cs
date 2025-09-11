@@ -1,0 +1,19 @@
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using Sant_George.Models.User;
+
+namespace Sant_George.Models.Exam
+{
+
+    public class StudentAnswerText
+    {
+        public int Id { get; set; }
+        [ForeignKey(nameof(Student))]
+        public string StudentId { get; set; }
+        public virtual ApplicationUser Student { get; set; }
+        [ForeignKey(nameof(Question))]
+        public int QuestionId { get; set; }
+        public virtual Question Question { get; set; }
+        public string? Text { get; set; }
+    }
+}

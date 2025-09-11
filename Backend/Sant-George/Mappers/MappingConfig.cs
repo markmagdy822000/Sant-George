@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Sant_George_Website.DTOs;
-using SantGeorgeWebsite.Models;
+using Sant_George.DTOs.Auth;
+using Sant_George.Models.User;
 
-namespace Sant_George_Website.Mappers
+namespace Sant_George.Mappers
 {
     public class MappingConfig : Profile
     {

@@ -20,4 +20,12 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Exam\" />
+    <Folder Include="Controllers\Post\" />
+    <Folder Include="Controllers\User\" />
+    <Folder Include="DTOs\Exam\" />
+    <Folder Include="DTOs\Post\" />
+  </ItemGroup>
+
 </Project>

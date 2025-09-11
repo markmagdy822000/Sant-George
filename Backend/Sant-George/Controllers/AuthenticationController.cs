@@ -12,13 +12,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Sant_George.DTOs;
-using Sant_George.Models;
-using Sant_George_Website.DTOs;
-using Sant_George_Website.UnitOfWorks;
-using SantGeorgeWebsite.Models;
+using Sant_George.DTOs.Auth;
+using Sant_George.Models.User;
+using Sant_George.UnitOfWorks;
 
-namespace Sant_George_Website.Controllers
+namespace Sant_George.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SantGeorgeWebsite.Models;
+using Sant_George.Models;
 
 #nullable disable
 
-namespace Sant_George_Website.Migrations
+namespace Sant_George.Migrations
 {
     [DbContext(typeof(SantGeorgeWebsiteDBContext))]
     [Migration("20250827022453_v5")]
@@ -161,7 +161,7 @@ namespace Sant_George_Website.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.Answer", b =>
+            modelBuilder.Entity("Sant_George.Models.Answer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -189,7 +189,7 @@ namespace Sant_George_Website.Migrations
                     b.ToTable("Answers");
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Sant_George.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -285,7 +285,7 @@ namespace Sant_George_Website.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.Exam", b =>
+            modelBuilder.Entity("Sant_George.Models.Exam", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -323,7 +323,7 @@ namespace Sant_George_Website.Migrations
                     b.ToTable("Exams");
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.Question", b =>
+            modelBuilder.Entity("Sant_George.Models.Question", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -348,7 +348,7 @@ namespace Sant_George_Website.Migrations
                     b.ToTable("Questions");
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.StudentAnswerChoose", b =>
+            modelBuilder.Entity("Sant_George.Models.StudentAnswerChoose", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -372,7 +372,7 @@ namespace Sant_George_Website.Migrations
                     b.ToTable("StudentAnswerChoose");
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.StudentAnswerText", b =>
+            modelBuilder.Entity("Sant_George.Models.StudentAnswerText", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -399,7 +399,7 @@ namespace Sant_George_Website.Migrations
                     b.ToTable("StudentAnswerText");
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.StudentAssignedExam", b =>
+            modelBuilder.Entity("Sant_George.Models.StudentAssignedExam", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -423,7 +423,7 @@ namespace Sant_George_Website.Migrations
                     b.ToTable("StudentAssignedExam");
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.TeacherMarkExam", b =>
+            modelBuilder.Entity("Sant_George.Models.TeacherMarkExam", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -458,7 +458,7 @@ namespace Sant_George_Website.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("SantGeorgeWebsite.Models.ApplicationUser", null)
+                    b.HasOne("Sant_George.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -467,7 +467,7 @@ namespace Sant_George_Website.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("SantGeorgeWebsite.Models.ApplicationUser", null)
+                    b.HasOne("Sant_George.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -482,7 +482,7 @@ namespace Sant_George_Website.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SantGeorgeWebsite.Models.ApplicationUser", null)
+                    b.HasOne("Sant_George.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -491,16 +491,16 @@ namespace Sant_George_Website.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("SantGeorgeWebsite.Models.ApplicationUser", null)
+                    b.HasOne("Sant_George.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.Answer", b =>
+            modelBuilder.Entity("Sant_George.Models.Answer", b =>
                 {
-                    b.HasOne("SantGeorgeWebsite.Models.Question", "Question")
+                    b.HasOne("Sant_George.Models.Question", "Question")
                         .WithMany("Answers")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -509,9 +509,9 @@ namespace Sant_George_Website.Migrations
                     b.Navigation("Question");
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.Exam", b =>
+            modelBuilder.Entity("Sant_George.Models.Exam", b =>
                 {
-                    b.HasOne("SantGeorgeWebsite.Models.ApplicationUser", "Teacher")
+                    b.HasOne("Sant_George.Models.ApplicationUser", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -520,9 +520,9 @@ namespace Sant_George_Website.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.Question", b =>
+            modelBuilder.Entity("Sant_George.Models.Question", b =>
                 {
-                    b.HasOne("SantGeorgeWebsite.Models.Exam", "Exam")
+                    b.HasOne("Sant_George.Models.Exam", "Exam")
                         .WithMany("Questions")
                         .HasForeignKey("ExamId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -531,15 +531,15 @@ namespace Sant_George_Website.Migrations
                     b.Navigation("Exam");
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.StudentAnswerChoose", b =>
+            modelBuilder.Entity("Sant_George.Models.StudentAnswerChoose", b =>
                 {
-                    b.HasOne("SantGeorgeWebsite.Models.Answer", "Answer")
+                    b.HasOne("Sant_George.Models.Answer", "Answer")
                         .WithMany()
                         .HasForeignKey("AnswerId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SantGeorgeWebsite.Models.ApplicationUser", "Student")
+                    b.HasOne("Sant_George.Models.ApplicationUser", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -550,15 +550,15 @@ namespace Sant_George_Website.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.StudentAnswerText", b =>
+            modelBuilder.Entity("Sant_George.Models.StudentAnswerText", b =>
                 {
-                    b.HasOne("SantGeorgeWebsite.Models.Question", "Question")
+                    b.HasOne("Sant_George.Models.Question", "Question")
                         .WithMany()
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SantGeorgeWebsite.Models.ApplicationUser", "Student")
+                    b.HasOne("Sant_George.Models.ApplicationUser", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -569,15 +569,15 @@ namespace Sant_George_Website.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.StudentAssignedExam", b =>
+            modelBuilder.Entity("Sant_George.Models.StudentAssignedExam", b =>
                 {
-                    b.HasOne("SantGeorgeWebsite.Models.Exam", "Exam")
+                    b.HasOne("Sant_George.Models.Exam", "Exam")
                         .WithMany()
                         .HasForeignKey("ExamId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SantGeorgeWebsite.Models.ApplicationUser", "Student")
+                    b.HasOne("Sant_George.Models.ApplicationUser", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -588,15 +588,15 @@ namespace Sant_George_Website.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.TeacherMarkExam", b =>
+            modelBuilder.Entity("Sant_George.Models.TeacherMarkExam", b =>
                 {
-                    b.HasOne("SantGeorgeWebsite.Models.Exam", "Exam")
+                    b.HasOne("Sant_George.Models.Exam", "Exam")
                         .WithMany()
                         .HasForeignKey("ExamId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SantGeorgeWebsite.Models.ApplicationUser", "Teacher")
+                    b.HasOne("Sant_George.Models.ApplicationUser", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -607,12 +607,12 @@ namespace Sant_George_Website.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.Exam", b =>
+            modelBuilder.Entity("Sant_George.Models.Exam", b =>
                 {
                     b.Navigation("Questions");
                 });
 
-            modelBuilder.Entity("SantGeorgeWebsite.Models.Question", b =>
+            modelBuilder.Entity("Sant_George.Models.Question", b =>
                 {
                     b.Navigation("Answers");
                 });

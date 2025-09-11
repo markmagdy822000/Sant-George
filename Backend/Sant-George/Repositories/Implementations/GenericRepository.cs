@@ -1,9 +1,9 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using Microsoft.EntityFrameworkCore;
-using SantGeorgeWebsite.Models;
-using SantGeorgeWebsite.Repositories.Interfaces;
+using Sant_George.Models;
+using Sant_George.Repositories.Interfaces;
 
-namespace SantGeorgeWebsite.Repositories.Implementations
+namespace Sant_George.Repositories.Implementations
 {
     public class GenericRepository<T> : IGenericRepository<T> where T: class
     {

@@ -1,4 +1,4 @@
-﻿namespace SantGeorgeWebsite.Repositories.Interfaces
+﻿namespace Sant_George.Repositories.Interfaces
 {
     public interface IGenericRepository<T>
     {

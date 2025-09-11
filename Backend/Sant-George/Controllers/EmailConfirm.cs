@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Sant_George_Website.UnitOfWorks;
-using SantGeorgeWebsite.Models;
+using Sant_George.Models.User;
+using Sant_George.UnitOfWorks;
 
 
-namespace Sant_George_Website.Controllers
+namespace Sant_George.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

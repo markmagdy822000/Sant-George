@@ -1,4 +1,4 @@
-﻿namespace SantGeorgeWebsite.Models
+﻿namespace Sant_George.Models
 {
     public class Service
     {
@@ -7,7 +7,7 @@
     }
     public enum ServiceType
     {
-        BabyClass, Primary, Preparatory, Secondary, Youth, Graduates, General, 
-        Bagom,Puppet_Theater, Service, Bible_Marathon
+        BabyClass, Primary, Preparatory, Secondary, Youth, Graduates, General,
+        Bagom, Puppet_Theater, Service, Bible_Marathon
     }
 }

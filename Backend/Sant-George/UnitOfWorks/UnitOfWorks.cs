@@ -1,11 +1,14 @@
-﻿using System.Runtime.CompilerServices;
-using Sant_George_Website.Repositories.Implementations;
-using Sant_George_Website.Repositories.Interfaces;
-using SantGeorgeWebsite.Models;
-using SantGeorgeWebsite.Repositories.Implementations;
-using SantGeorgeWebsite.Repositories.Interfaces;
+﻿using Sant_George.Models;
+using Sant_George.Repositories.Implementations;
+using Sant_George.Repositories.Implementations.Exam;
+using Sant_George.Repositories.Implementations.Post;
+using Sant_George.Repositories.Implementations.User;
+using Sant_George.Repositories.Interfaces;
+using Sant_George.Repositories.Interfaces.Exam;
+using Sant_George.Repositories.Interfaces.Post;
+using Sant_George.Repositories.Interfaces.User;
 
-namespace Sant_George_Website.UnitOfWorks
+namespace Sant_George.UnitOfWorks
 {
     public class UnitOfWorks : IUnitOfWorks
     {
