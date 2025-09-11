@@ -25,11 +25,12 @@ namespace Sant_George.UnitOfWorks
         IQuestionRepository QuestionRepository { get; }
         IServiceRepository ServiceRepository { get; }
         IStudentAnswerChooseRepository StudentAnswerChooseRepository { get; }
-        IStudentAnswerTextRepository StudentAnswerTextpository { get; }
+        IStudentAnswerTextRepository StudentAnswerTextRepository { get; }
         IStudentAssignedExamRepository StudentAssignedExamRepository { get; }
         ITeacherMarkExamRepository TeacherMarkExamRepository { get; }
         IUserParentRepository UserParentRepository { get; }
         IUserServiceRoleRepository UserServiceRoleRepository { get; }
+        IAnswerRepository AnswerRepository { get; }
         Task SaveChanges();
     }
 }

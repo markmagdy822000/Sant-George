@@ -10,6 +10,5 @@ namespace Sant_George.DTOs.Exam
         public string Text { get; set; }
         public bool? IsCorrect { get; set; }
         public int QuestionId { get; set; }
-        public QuestionType Type { get; set; }
     }
 }

@@ -11,5 +11,7 @@ namespace Sant_George.DTOs.Exam
         //[ForeignKey(nameof(Exam))]
         public int ExamId { get; set; }
         public virtual ICollection<AnswerDTO> Answers { get; set; }
+        public QuestionType  Type { get; set; }
+
     }
 }

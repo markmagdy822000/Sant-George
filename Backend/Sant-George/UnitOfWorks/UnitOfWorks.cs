@@ -138,14 +138,13 @@ namespace Sant_George.UnitOfWorks
             }
         }
 
-        IStudentAnswerTextRepository studentAnswerTextpository;
-
-        public IStudentAnswerTextRepository StudentAnswerTextpository
+        IAnswerRepository answerRepository;
+        public IAnswerRepository AnswerRepository
         {
             get
             {
-                if (studentAnswerTextpository == null) studentAnswerTextpository = new StudentAnswerTextRepository(_context);
-                return studentAnswerTextpository;
+                if (answerRepository == null) answerRepository = new AnswerRepository(_context);
+                return answerRepository;
             }
         }
         public async Task SaveChanges()

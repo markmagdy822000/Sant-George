@@ -10,6 +10,11 @@ namespace Sant_George.Models.ExamModels
         [ForeignKey(nameof(Exam))]
         public int ExamId { get; set; }
         public virtual Exam Exam { get; set; }
+        public QuestionType Type { get; set; }
         public virtual ICollection<Answer> Answers { get; set; }
+    }
+    public enum QuestionType
+    {
+        Text, OneAnswer, MultipleAnswers
     }
 }

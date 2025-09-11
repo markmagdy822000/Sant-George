@@ -11,12 +11,8 @@ namespace Sant_George.Models.ExamModels
         [ForeignKey(nameof(Question))]
         public int QuestionId { get; set; }
         public virtual Question Question { get; set; }
-        public QuestionType Type { get; set; }
 
     }
 
-    public enum QuestionType
-    {
-        Text, OneAnswer, MultipleAnswers
-    }
+   
 }
