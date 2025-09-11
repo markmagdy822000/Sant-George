@@ -12,8 +12,8 @@ using Sant_George.Models;
 namespace Sant_George.Migrations
 {
     [DbContext(typeof(SantGeorgeWebsiteDBContext))]
-    [Migration("20250909165314_add-refresh-token")]
-    partial class addrefreshtoken
+    [Migration("20250911154642_v9")]
+    partial class v9
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -161,7 +161,7 @@ namespace Sant_George.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Sant_George.Models.Answer", b =>
+            modelBuilder.Entity("Sant_George.Models.ExamModels.Answer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -189,7 +189,169 @@ namespace Sant_George.Migrations
                     b.ToTable("Answers");
                 });
 
-            modelBuilder.Entity("Sant_George.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Sant_George.Models.ExamModels.Exam", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxDegree")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinDegree")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StarteDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TeacherId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("Exams");
+                });
+
+            modelBuilder.Entity("Sant_George.Models.ExamModels.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<float>("Degree")
+                        .HasColumnType("real");
+
+                    b.Property<int>("ExamId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExamId");
+
+                    b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("Sant_George.Models.ExamModels.StudentAnswerChoose", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AnswerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnswerId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentAnswerChoose");
+                });
+
+            modelBuilder.Entity("Sant_George.Models.ExamModels.StudentAnswerText", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentAnswerText");
+                });
+
+            modelBuilder.Entity("Sant_George.Models.ExamModels.StudentAssignedExam", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ExamId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExamId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentAssignedExam");
+                });
+
+            modelBuilder.Entity("Sant_George.Models.ExamModels.TeacherMarkExam", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ExamId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TeacherId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExamId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("TeacherMarkExam");
+                });
+
+            modelBuilder.Entity("Sant_George.Models.User.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -217,6 +379,9 @@ namespace Sant_George.Migrations
 
                     b.Property<int>("Gender")
                         .HasColumnType("int");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -269,182 +434,21 @@ namespace Sant_George.Migrations
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
                             Address = "Cairo",
-                            Class = 1,
+                            Class = 2000,
                             ConcurrencyStamp = "123",
-                            Email = "markmagdy822000@gmail.com",
+                            Email = "markmagdy@gmail.com",
                             EmailConfirmed = true,
                             Gender = 0,
+                            Location = "",
                             LockoutEnabled = false,
-                            NormalizedEmail = "MARKMAGDY822000@GMAIL.COM",
+                            NormalizedEmail = "MARKMAGDY@GMAIL.COM",
                             NormalizedUserName = "MARKMAGDY",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIGNJmDYCXgbjEfhYxHzHuprZ7oZqCkRSS8njQI5MknzmZDzFBiABkkzz85gQwXFkw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPcrEYTAjgSZAVIsmv+n5O2GXtUfnEF1OdR2LFZBKP3nVhlwnvj/MkZt/cbLTZlDPA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "c0f5028c-0e82-419c-9593-68e9255e2b9d",
                             TwoFactorEnabled = false,
                             UserName = "MarkMagdy"
                         });
-                });
-
-            modelBuilder.Entity("Sant_George.Models.ExamModels", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Duration")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaxDegree")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MinDegree")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StarteDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TeacherId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TeacherId");
-
-                    b.ToTable("Exams");
-                });
-
-            modelBuilder.Entity("Sant_George.Models.Question", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<float>("Degree")
-                        .HasColumnType("real");
-
-                    b.Property<int>("ExamId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExamId");
-
-                    b.ToTable("Questions");
-                });
-
-            modelBuilder.Entity("Sant_George.Models.StudentAnswerChoose", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AnswerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StudentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnswerId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("StudentAnswerChoose");
-                });
-
-            modelBuilder.Entity("Sant_George.Models.StudentAnswerText", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StudentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("StudentAnswerText");
-                });
-
-            modelBuilder.Entity("Sant_George.Models.StudentAssignedExam", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ExamId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StudentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExamId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("StudentAssignedExam");
-                });
-
-            modelBuilder.Entity("Sant_George.Models.TeacherMarkExam", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ExamId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TeacherId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExamId");
-
-                    b.HasIndex("TeacherId");
-
-                    b.ToTable("TeacherMarkExam");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -458,7 +462,7 @@ namespace Sant_George.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Sant_George.Models.ApplicationUser", null)
+                    b.HasOne("Sant_George.Models.User.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -467,7 +471,7 @@ namespace Sant_George.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Sant_George.Models.ApplicationUser", null)
+                    b.HasOne("Sant_George.Models.User.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -482,7 +486,7 @@ namespace Sant_George.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Sant_George.Models.ApplicationUser", null)
+                    b.HasOne("Sant_George.Models.User.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -491,16 +495,16 @@ namespace Sant_George.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Sant_George.Models.ApplicationUser", null)
+                    b.HasOne("Sant_George.Models.User.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Sant_George.Models.Answer", b =>
+            modelBuilder.Entity("Sant_George.Models.ExamModels.Answer", b =>
                 {
-                    b.HasOne("Sant_George.Models.Question", "Question")
+                    b.HasOne("Sant_George.Models.ExamModels.Question", "Question")
                         .WithMany("Answers")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -509,9 +513,107 @@ namespace Sant_George.Migrations
                     b.Navigation("Question");
                 });
 
-            modelBuilder.Entity("Sant_George.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Sant_George.Models.ExamModels.Exam", b =>
                 {
-                    b.OwnsMany("Sant_George.Models.RefreshToken", "RefreshTokens", b1 =>
+                    b.HasOne("Sant_George.Models.User.ApplicationUser", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("Sant_George.Models.ExamModels.Question", b =>
+                {
+                    b.HasOne("Sant_George.Models.ExamModels.Exam", "Exam")
+                        .WithMany("Questions")
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Exam");
+                });
+
+            modelBuilder.Entity("Sant_George.Models.ExamModels.StudentAnswerChoose", b =>
+                {
+                    b.HasOne("Sant_George.Models.ExamModels.Answer", "Answer")
+                        .WithMany()
+                        .HasForeignKey("AnswerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Sant_George.Models.User.ApplicationUser", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Answer");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Sant_George.Models.ExamModels.StudentAnswerText", b =>
+                {
+                    b.HasOne("Sant_George.Models.ExamModels.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Sant_George.Models.User.ApplicationUser", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Question");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Sant_George.Models.ExamModels.StudentAssignedExam", b =>
+                {
+                    b.HasOne("Sant_George.Models.ExamModels.Exam", "Exam")
+                        .WithMany()
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Sant_George.Models.User.ApplicationUser", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Exam");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Sant_George.Models.ExamModels.TeacherMarkExam", b =>
+                {
+                    b.HasOne("Sant_George.Models.ExamModels.Exam", "Exam")
+                        .WithMany()
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Sant_George.Models.User.ApplicationUser", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Exam");
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("Sant_George.Models.User.ApplicationUser", b =>
+                {
+                    b.OwnsMany("Sant_George.Models.User.RefreshToken", "RefreshTokens", b1 =>
                         {
                             b1.Property<string>("ApplicationUserId")
                                 .HasColumnType("nvarchar(450)");
@@ -526,6 +628,9 @@ namespace Sant_George.Migrations
                                 .HasColumnType("datetime2");
 
                             b1.Property<DateTime>("ExpiresOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime?>("RevokedOn")
                                 .HasColumnType("datetime2");
 
                             b1.Property<string>("Token")
@@ -543,110 +648,12 @@ namespace Sant_George.Migrations
                     b.Navigation("RefreshTokens");
                 });
 
-            modelBuilder.Entity("Sant_George.Models.ExamModels", b =>
-                {
-                    b.HasOne("Sant_George.Models.ApplicationUser", "Teacher")
-                        .WithMany()
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Teacher");
-                });
-
-            modelBuilder.Entity("Sant_George.Models.Question", b =>
-                {
-                    b.HasOne("Sant_George.Models.ExamModels", "Exam")
-                        .WithMany("Questions")
-                        .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Exam");
-                });
-
-            modelBuilder.Entity("Sant_George.Models.StudentAnswerChoose", b =>
-                {
-                    b.HasOne("Sant_George.Models.Answer", "Answer")
-                        .WithMany()
-                        .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Sant_George.Models.ApplicationUser", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Answer");
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("Sant_George.Models.StudentAnswerText", b =>
-                {
-                    b.HasOne("Sant_George.Models.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Sant_George.Models.ApplicationUser", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Question");
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("Sant_George.Models.StudentAssignedExam", b =>
-                {
-                    b.HasOne("Sant_George.Models.ExamModels", "Exam")
-                        .WithMany()
-                        .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Sant_George.Models.ApplicationUser", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Exam");
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("Sant_George.Models.TeacherMarkExam", b =>
-                {
-                    b.HasOne("Sant_George.Models.ExamModels", "Exam")
-                        .WithMany()
-                        .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Sant_George.Models.ApplicationUser", "Teacher")
-                        .WithMany()
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Exam");
-
-                    b.Navigation("Teacher");
-                });
-
-            modelBuilder.Entity("Sant_George.Models.ExamModels", b =>
+            modelBuilder.Entity("Sant_George.Models.ExamModels.Exam", b =>
                 {
                     b.Navigation("Questions");
                 });
 
-            modelBuilder.Entity("Sant_George.Models.Question", b =>
+            modelBuilder.Entity("Sant_George.Models.ExamModels.Question", b =>
                 {
                     b.Navigation("Answers");
                 });

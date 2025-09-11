@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Sant_George.DTOs.Auth;
+using Sant_George.DTOs.Exam;
+using Sant_George.Models.ExamModels;
 using Sant_George.Models.User;
 
 namespace Sant_George.Mappers
@@ -10,6 +12,9 @@ namespace Sant_George.Mappers
         {
             CreateMap<RegisterDTO, ApplicationUser>().ReverseMap();
             CreateMap<LoginDTO, ApplicationUser>().ReverseMap();
+            CreateMap<Exam, ExamDTO>().ReverseMap();
+            CreateMap<Question, QuestionDTO>().ReverseMap();
+            CreateMap<Answer, AnswerDTO>().ReverseMap();
 
         }
     }

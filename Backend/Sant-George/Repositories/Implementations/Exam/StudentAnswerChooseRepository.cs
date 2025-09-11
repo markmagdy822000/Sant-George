@@ -1,4 +1,4 @@
-﻿using Sant_George.Models.Exam;
+﻿using Sant_George.Models.ExamModels;
 using Sant_George.Repositories.Interfaces.Exam;
 using Sant_George.Models;
 using Sant_George.Repositories.Implementations;

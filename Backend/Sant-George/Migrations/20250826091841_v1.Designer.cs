@@ -264,7 +264,7 @@ namespace Sant_George.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Sant_George.Models.Exam", b =>
+            modelBuilder.Entity("Sant_George.Models.ExamModels", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -488,7 +488,7 @@ namespace Sant_George.Migrations
                     b.Navigation("Question");
                 });
 
-            modelBuilder.Entity("Sant_George.Models.Exam", b =>
+            modelBuilder.Entity("Sant_George.Models.ExamModels", b =>
                 {
                     b.HasOne("Sant_George.Models.ApplicationUser", "Teacher")
                         .WithMany()
@@ -501,7 +501,7 @@ namespace Sant_George.Migrations
 
             modelBuilder.Entity("Sant_George.Models.Question", b =>
                 {
-                    b.HasOne("Sant_George.Models.Exam", "Exam")
+                    b.HasOne("Sant_George.Models.ExamModels", "Exam")
                         .WithMany("Questions")
                         .HasForeignKey("ExamId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -550,7 +550,7 @@ namespace Sant_George.Migrations
 
             modelBuilder.Entity("Sant_George.Models.StudentAssignedExam", b =>
                 {
-                    b.HasOne("Sant_George.Models.Exam", "Exam")
+                    b.HasOne("Sant_George.Models.ExamModels", "Exam")
                         .WithMany()
                         .HasForeignKey("ExamId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -569,7 +569,7 @@ namespace Sant_George.Migrations
 
             modelBuilder.Entity("Sant_George.Models.TeacherMarkExam", b =>
                 {
-                    b.HasOne("Sant_George.Models.Exam", "Exam")
+                    b.HasOne("Sant_George.Models.ExamModels", "Exam")
                         .WithMany()
                         .HasForeignKey("ExamId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -586,7 +586,7 @@ namespace Sant_George.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("Sant_George.Models.Exam", b =>
+            modelBuilder.Entity("Sant_George.Models.ExamModels", b =>
                 {
                     b.Navigation("Questions");
                 });

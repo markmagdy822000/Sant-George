@@ -2,16 +2,16 @@
 using Microsoft.EntityFrameworkCore;
 using Sant_George.Models.User;
 
-namespace Sant_George.Models.Exam
+namespace Sant_George.Models.ExamModels
 {
-    public class StudentAssignedExam
+    public class StudentAnswerChoose
     {
         public int Id { get; set; }
         [ForeignKey(nameof(Student))]
         public string StudentId { get; set; }
         public virtual ApplicationUser Student { get; set; }
-        [ForeignKey(nameof(Exam))]
-        public int ExamId { get; set; }
-        public virtual Exam Exam { get; set; }
+        [ForeignKey(nameof(Answer))]
+        public int AnswerId { get; set; }
+        public virtual Answer Answer { get; set; }
     }
 }

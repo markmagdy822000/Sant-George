@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.Metadata.Ecma335;
 
-namespace Sant_George.Models.Exam
+namespace Sant_George.Models.ExamModels
 {
     public class Answer
     {
-        public int Id { get; set; }
-
+        public int? Id { get; set; }
         public string Text { get; set; }
         public bool? IsCorrect { get; set; }
         [ForeignKey(nameof(Question))]

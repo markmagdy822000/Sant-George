@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Sant_George.Models.User;
 
-namespace Sant_George.Models.Exam
+namespace Sant_George.Models.ExamModels
 {
 
     public class StudentAnswerText

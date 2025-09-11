@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
 using Sant_George.Models.User;
 
-namespace Sant_George.Models.Post
+namespace Sant_George.Models.PostModels
 {
     public class Comment
     {

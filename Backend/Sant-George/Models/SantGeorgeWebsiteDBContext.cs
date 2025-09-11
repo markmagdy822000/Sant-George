@@ -3,7 +3,7 @@ using System.Reflection.Emit;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Sant_George.Models.Exam;
+using Sant_George.Models.ExamModels;
 using Sant_George.Models.User;
 
 namespace Sant_George.Models
@@ -13,7 +13,7 @@ namespace Sant_George.Models
         public SantGeorgeWebsiteDBContext(DbContextOptions<SantGeorgeWebsiteDBContext> options) : base(options) { }
             
         public DbSet<Answer>Answers{ get; set; }
-        public DbSet<Sant_George.Models.Exam.Exam> Exams { get; set; }
+        public DbSet<Sant_George.Models.ExamModels.Exam> Exams { get; set; }
         public DbSet<Question >Questions { get; set; }
         public DbSet<StudentAnswerChoose >StudentAnswerChoose { get; set; }
         public DbSet<StudentAnswerText >StudentAnswerText { get; set; }

@@ -139,7 +139,7 @@ namespace Sant_George.Controllers
                 Expires = new DateTimeOffset(refreshToken.ExpiresOn.ToLocalTime()),
                 HttpOnly = true,
                 // Change to Secure=true //on production
-                Secure = false,
+                Secure = true,
                 SameSite = SameSiteMode.None
             };
             HttpContext.Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);

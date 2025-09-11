@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Sant_George.Models.Exam
+namespace Sant_George.Models.ExamModels
 {
     public class Question
     {
