@@ -37,6 +37,8 @@ export class AuthServices {
   getRefreshToken(oldToken?:string):Observable<any>{
     if(oldToken == null)  oldToken=""
     console.log("oldTokenoldToke: ",oldToken);
-    return this.http.post<any>(`${this.baseUrl}/newTokens`, null, {withCredentials : true});
+    console.log('req snet from auth service: ')
+    console.log(`${this.baseUrl}/newTokens, ${oldToken}`)
+    return this.http.post<any>(`${this.baseUrl}/newTokens?`,{oldToken}, {withCredentials : true});
   }
 }

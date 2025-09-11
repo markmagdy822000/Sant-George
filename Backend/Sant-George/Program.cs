@@ -35,17 +35,12 @@ namespace SantGeorgeWebsite
                 options.UseLazyLoadingProxies()
                        .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // ✅ JWT Authentication setup with standard "Bearer" scheme
-            var jwtKey = "this is my secrect key for the SantGeorge project";
+            var jwtKey = builder.Configuration["JWTKey"];
             var key = Encoding.ASCII.GetBytes(jwtKey);
-
-
-           
-
-
-             // Identity
+            
+            // Identity
              builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-            {
+             {
                 options.SignIn.RequireConfirmedEmail = true;
                 options.User.RequireUniqueEmail = true;
                 options.Password.RequireUppercase = false;
@@ -76,7 +71,7 @@ namespace SantGeorgeWebsite
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 IssuerSigningKey = secretKey,
-                ValidateLifetime = true,
+                //ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero,
             };
         });

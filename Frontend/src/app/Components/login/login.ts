@@ -29,9 +29,12 @@ ngOnDestroy(): void {
         localStorage.setItem('token', res.token??"");
         localStorage.setItem('userId', res.userId??"");
         localStorage.setItem('email', res.email??"");
+        localStorage.setItem('refreshToken', res.refreshToken??"");
       },
       error:(err)=>console.log(err)
     });
   }
+
+  
 
 }

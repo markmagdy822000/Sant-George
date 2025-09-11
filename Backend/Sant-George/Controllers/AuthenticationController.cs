@@ -30,14 +30,16 @@ namespace Sant_George_Website.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<AuthenticationController> _logger;
         public IEmailSender _mailSender;
-
+        public IConfiguration _config;
         public AuthenticationController(
             IUnitOfWorks unit,
             IMapper mapper,
             IEmailSender mailSender,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<AuthenticationController> logger)
+            ILogger<AuthenticationController> logger,
+            IConfiguration config)
+
         {
             _unit = unit;
             _mapper = mapper;
@@ -45,6 +47,8 @@ namespace Sant_George_Website.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _config = config;
+
         }
 
         [HttpPost("Register")]
@@ -90,9 +94,9 @@ namespace Sant_George_Website.Controllers
             var found = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (!found)
                 return BadRequest(new { errors = new[] { "Invalid User Email or Password" } });
-            
+
             AuthDTO? authDTO = new AuthDTO();
-            
+
 
             #region JWT Token Generation
 
@@ -112,7 +116,8 @@ namespace Sant_George_Website.Controllers
                 authDTO.refreshToken = RefreshToken.Token;
                 authDTO.refreshTokenExpiresOn = RefreshToken.ExpiresOn;
             }
-            else{
+            else
+            {
                 RefreshToken = GenerateRefreshToken();
                 authDTO.refreshToken = RefreshToken.Token;
                 authDTO.refreshTokenExpiresOn = RefreshToken.ExpiresOn;
@@ -134,11 +139,12 @@ namespace Sant_George_Website.Controllers
             var cookieOptions = new CookieOptions()
             {
                 Expires = new DateTimeOffset(refreshToken.ExpiresOn.ToLocalTime()),
-                HttpOnly=true,
-                Secure = true,
+                HttpOnly = true,
+                // Change to Secure=true //on production
+                Secure = false,
                 SameSite = SameSiteMode.None
             };
-            HttpContext.Response.Cookies.Append("refreshToken", refreshToken.Token,cookieOptions);
+            HttpContext.Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
         }
         public async Task<JwtSecurityToken> GenerateAccessToken(ApplicationUser user)
         {
@@ -153,14 +159,13 @@ namespace Sant_George_Website.Controllers
             foreach (var role in roles)
                 claims.Add(new Claim(ClaimTypes.Role, role));
 
-            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("this is my secrect key for the SantGeorge project"));
+            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["JWTKey"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.UtcNow.AddSeconds(30), 
+                expires: DateTime.UtcNow.AddHours(1),
                 signingCredentials: credentials,
-                notBefore: DateTime.UtcNow 
+                notBefore: DateTime.UtcNow
             );
             return token;
         }
@@ -205,29 +210,31 @@ namespace Sant_George_Website.Controllers
             var generator = new RNGCryptoServiceProvider();
             generator.GetBytes(randomNumber);
 
-            return new RefreshToken 
+            return new RefreshToken
             {
                 Token = Convert.ToBase64String(randomNumber),
                 CreatedOn = DateTime.UtcNow,
-                ExpiresOn = DateTime.UtcNow.AddDays(7),
+                ExpiresOn = DateTime.UtcNow.AddDays(30),
             };
         }
 
         [AllowAnonymous]
         [HttpPost("newTokens")]
-        public async Task<IActionResult> GenerateNewRefreshAndAccessTokens() {
-            var oldToken  = Request.Cookies["refreshToken"];
-            if (string.IsNullOrEmpty(oldToken))
-                return BadRequest( new AuthDTO { Message = "Refresh token not found" });
+        public async Task<IActionResult> GenerateNewRefreshAndAccessTokens(RefreshTokenDTO refreshTokenDto)
+        {
+            //if (oldToken == null) Request.Cookies["refreshToken"].ToString();
+            //var oldToken = Request.Cookies["refreshToken"];
+            if (string.IsNullOrEmpty(refreshTokenDto.oldToken))
+                return BadRequest(new AuthDTO { Message = "Refresh token not found" });
 
-            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(r => r.Token== oldToken));
-            if (user == null) return BadRequest( new AuthDTO{ Message = "not valid" });
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(r => r.Token == refreshTokenDto.oldToken));
+            if (user == null) return BadRequest(new AuthDTO { Message = "not valid" });
 
-            var refreshToken = user.RefreshTokens.FirstOrDefault(r => r.Token == oldToken);
+            var refreshToken = user.RefreshTokens.FirstOrDefault(r => r.Token == refreshTokenDto.oldToken);
 
-            if (refreshToken.IsExpired) return BadRequest(new AuthDTO { Message = "token expired" }); 
+            if (refreshToken.IsExpired) return BadRequest(new AuthDTO { Message = "token expired" });
 
-            if(!refreshToken.IsActive) return BadRequest(new AuthDTO { Message = "token is not active (used before or expired)" });
+            if (!refreshToken.IsActive) return BadRequest(new AuthDTO { Message = "token is not active (used before or expired)" });
             refreshToken.RevokedOn = DateTime.UtcNow;
             refreshToken = GenerateRefreshToken();
             user.RefreshTokens.Add(refreshToken);
@@ -239,7 +246,7 @@ namespace Sant_George_Website.Controllers
             {
                 token = new JwtSecurityTokenHandler().WriteToken(accessToken),
                 expires = accessToken.ValidTo,
-                //refreshToken = refreshToken.Token,
+                refreshToken = refreshToken.Token,
                 refreshTokenExpiresOn = refreshToken.ExpiresOn,
                 userId = user.Id,
                 email = user.Email,

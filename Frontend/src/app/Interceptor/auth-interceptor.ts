@@ -21,10 +21,13 @@ return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status == 401) {
         // ✅ RETURN the refresh token observable, don't just subscribe to it
-        return authService.getRefreshToken().pipe(
+        let refreshToken=localStorage.getItem("refreshToken")??"";
+        console.log("refreshToken: ",refreshToken);
+        return authService.getRefreshToken(refreshToken).pipe(
           switchMap(res => {
             console.log(res);
             localStorage.setItem('token', res.token);
+            localStorage.setItem('refreshToken', res.refreshToken);
             
             // ✅ Retry the original request with the new token
             const retryReq = req.clone({

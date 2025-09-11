@@ -5,4 +5,7 @@ export interface ILogin {
  token?: string;
  expires?: Date;
  userId?:string;
+ refreshToken?:string;
+ refreshTokenExpiresOn?:Date;
+ roles?:string[];
 }

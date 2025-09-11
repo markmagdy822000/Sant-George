@@ -7,7 +7,7 @@ namespace Sant_George.DTOs
     {
         public string token { get; set; }
         public DateTime expires { get; set; }
-        [JsonIgnore]
+        //[JsonIgnore]
         public string refreshToken { get; set; }
         public DateTime refreshTokenExpiresOn { get; set; }
         public string userId { get; set; }

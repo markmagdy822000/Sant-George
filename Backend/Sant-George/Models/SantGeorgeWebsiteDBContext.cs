@@ -69,15 +69,16 @@ namespace SantGeorgeWebsite.Models
                 Id = userId,
                 UserName = "MarkMagdy",
                 NormalizedUserName = "MARKMAGDY",
-                Email = "markmagdy822000@gmail.com",
-                NormalizedEmail = "MARKMAGDY822000@GMAIL.COM",
+                Email = "markmagdy@gmail.com",
+                NormalizedEmail = "MARKMAGDY@GMAIL.COM",
                 EmailConfirmed = true,
                 SecurityStamp = "c0f5028c-0e82-419c-9593-68e9255e2b9d",
                 ConcurrencyStamp = "123",
                 Address = "Cairo",
+                Location="",
                 Gender = Gender.Male, // Use your enum value
-                Class = 1,
-                PasswordHash = "AQAAAAIAAYagAAAAEIGNJmDYCXgbjEfhYxHzHuprZ7oZqCkRSS8njQI5MknzmZDzFBiABkkzz85gQwXFkw==" // original password = 123
+                Class = 2000,
+                PasswordHash = "AQAAAAIAAYagAAAAEPcrEYTAjgSZAVIsmv+n5O2GXtUfnEF1OdR2LFZBKP3nVhlwnvj/MkZt/cbLTZlDPA==" // original password = 123
             };
 
             builder.Entity<ApplicationUser>().HasData(user);
