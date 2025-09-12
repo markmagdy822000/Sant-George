@@ -7,7 +7,7 @@ namespace Sant_George.Models.ExamModels
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public DateTime StarteDate { get; set; }
+        public DateTime StartDate { get; set; }
         public TimeSpan Duration { get; set; }
         //public int MaxDegree { get; set; } //should be calculated from questions degree, exam should have percentage
         //public int MinDegree { get; set; }

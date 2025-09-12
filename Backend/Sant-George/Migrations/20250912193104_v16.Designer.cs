@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sant_George.Models;
 
@@ -11,9 +12,11 @@ using Sant_George.Models;
 namespace Sant_George.Migrations
 {
     [DbContext(typeof(SantGeorgeWebsiteDBContext))]
-    partial class SantGeorgeWebsiteDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250912193104_v16")]
+    partial class v16
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

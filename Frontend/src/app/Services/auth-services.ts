@@ -1,3 +1,4 @@
+import { config } from './../app.config.server';
 import { IResetPassword } from './../Models/ireset-password';
 import { IForgotPasswordDTO } from '../Models/iforgotPasswordDTO';
 import { Injectable } from '@angular/core';
@@ -40,5 +41,26 @@ export class AuthServices {
     console.log('req snet from auth service: ')
     console.log(`${this.baseUrl}/newTokens, ${oldToken}`)
     return this.http.post<any>(`${this.baseUrl}/newTokens?`,{oldToken}, {withCredentials : true});
+  }
+
+
+    decodeJwt():any {
+      let  token = localStorage.getItem('token')??"";
+      const parts = token.split('.');
+      if (parts.length !== 3) {
+        throw new Error('Invalid JWT format');
+      }
+      const payload = parts[1];
+      let base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+      while (base64.length % 4) {
+        base64 += '=';
+      }
+      const decodedPayload = atob(base64);
+      return JSON.parse(decodedPayload);
+  }
+  
+  isTeacher():boolean{
+      let roles = this.decodeJwt()['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+      return roles.includes('Teacher');
   }
 }

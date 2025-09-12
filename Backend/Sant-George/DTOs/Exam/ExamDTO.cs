@@ -8,7 +8,7 @@ namespace Sant_George.DTOs.Exam
     {
         public int? Id { get; set; }
         public string Title { get; set; }
-        public DateTime StarteDate { get; set; }
+        public DateTime StartDate { get; set; }
         public TimeSpan Duration { get; set; }
         //public int MaxDegree { get; set; }
         //public int MinDegree { get; set; }

@@ -130,7 +130,7 @@ namespace Sant_George.Controllers.Exam
             
             //mapping manual as the auto mapping create new object which is not allowed in update
             exam.Description = examDto?.Description;
-            exam.StarteDate = examDto.StarteDate;
+            exam.StartDate = examDto.StartDate;
             exam.Duration = examDto.Duration;
             exam.Title = examDto.Title;
             foreach (var questionDto in examDto.Questions)

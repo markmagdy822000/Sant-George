@@ -5,12 +5,17 @@ import { register } from 'module';
 import { Register } from './Components/register/register';
 import { ForgotPassword } from './Components/forgot-password/forgot-password';
 import { ResetPassword } from './Components/reset-password/reset-password';
+import { ExamServices } from './Services/exam-services';
+import { Exams } from './Components/Exam/exams/exams';
 
 export const routes: Routes = [
     {path:'', redirectTo:'register', pathMatch:'full'},
     {path:'login', component:Login},
     {path:'register', component:Register},
     {path:'forgot-password', component:ForgotPassword},
-    {path: 'reset-password', component: ResetPassword }
+    {path: 'reset-password', component: ResetPassword },
+    
+    
+    {path: 'exams', component: Exams }
 
 ];
